@@ -46,3 +46,6 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - clean-archi-for-free
+    - hspec
+    - hspec-discover
+    - QuickCheck

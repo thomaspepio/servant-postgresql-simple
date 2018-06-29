@@ -21,6 +21,8 @@ description:         Please see the README on GitHub at <https://github.com/gith
 
 dependencies:
 - base >= 4.7 && < 5
+- postgresql-simple
+- text
 
 library:
   source-dirs: src
@@ -35,6 +37,8 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - clean-archi-for-free
+    - postgresql-simple
+    - text
 
 tests:
   clean-archi-for-free-test:
@@ -49,3 +53,4 @@ tests:
     - hspec
     - hspec-discover
     - QuickCheck
+    - text

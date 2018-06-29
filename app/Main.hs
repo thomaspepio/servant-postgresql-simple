@@ -1,6 +1,10 @@
+{-# LANGUAGE OverloadedStrings #-}
 module Main where
 
-import Lib
+import           Data.Text
+import           Database
 
 main :: IO ()
-main = someFunc
+main = do
+    item <- findItem
+    putStrLn $ unpack item

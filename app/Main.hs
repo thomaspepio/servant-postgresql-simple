@@ -3,8 +3,9 @@ module Main where
 
 import           Data.Text
 import           Database
+import           Model
 
 main :: IO ()
 main = do
-    item <- findItem
-    putStrLn $ unpack item
+    item <- findItem 1
+    print item

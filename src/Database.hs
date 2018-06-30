@@ -12,13 +12,7 @@ import           Data.Text
 import           Database.PostgreSQL.Simple
 import           Database.PostgreSQL.Simple.FromField
 import           Database.PostgreSQL.Simple.FromRow
-
-type ItemId = Integer
-
-data Item = Item { itemId      :: ItemId,
-                   name        :: Text,
-                   description :: Text }
-    deriving (Eq, Show)
+import           Model
 
 instance FromRow Item where
     fromRow = Item <$> field <*> field <*> field
@@ -26,8 +20,10 @@ instance FromRow Item where
 data ItemAvailability = DoesNotExists | NotAvailable | Exists Item
     deriving (Eq, Show)
 
-findItem :: IO Text
-findItem = do
+findItem :: ItemId -> IO ItemAvailability
+findItem id = do
     conn <- connectPostgreSQL "host=127.0.0.1 dbname=haskell_test user=haskell_test password=haskell_test"
-    [Only i] <- query_ conn "select name from item where id=1"
-    return i
+    i <- query conn "select id, name, description from item where id=?" [id]
+    case i of
+        [item] -> return $ Exists item
+        []     -> return DoesNotExists

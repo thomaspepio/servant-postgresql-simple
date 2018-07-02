@@ -28,8 +28,8 @@ server = getItem
         getItem id = do
             item <- liftIO $ findItem id
             case item of
-                DoesNotExists -> throwError err404
-                NotAvailable  -> throwError err404
+                DoesNotExists -> throwError $ err404 { errBody = "This item does not exists" }
+                NotAvailable  -> throwError $ err404 { errBody = "This item is not in stock" }
                 Exists i      -> return i
 
 application :: Application

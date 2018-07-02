@@ -7,3 +7,4 @@ CREATE TABLE ITEM (
 
 INSERT INTO ITEM(NAME, DESCRIPTION, QUANTITY) values ('Nintendo Switch', 'Best console of its generation', 10);
 INSERT INTO ITEM(NAME, DESCRIPTION, QUANTITY) values ('Playstation 4', 'Almost as good as the Switch', 20);
+INSERT INTO ITEM(NAME, DESCRIPTION, QUANTITY) values ('Gamebuino', 'A retro console to learn coding (made per request)', 0);

@@ -15,3 +15,9 @@ data Item = Item { itemId      :: ItemId,
 
 data ItemAvailability = DoesNotExists | NotAvailable | Exists Item
     deriving (Eq, Show)
+
+-- TODO : an item does not have a quantity by itself
+--        represent the quantity only when the item is available
+-- type Quantity = Integer
+-- data ItemAvailability = DoesNotExists | NotAvailable | Exists Item Quantity
+--     deriving (Eq, Show)

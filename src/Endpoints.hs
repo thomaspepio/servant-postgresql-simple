@@ -40,6 +40,7 @@ instance FromJSON Item where
         <$> i .: "id"
         <*> i .: "name"
         <*> i .: "description"
+        <*> i .: "quantity"
 
 instance ToJSON Item where
-    toJSON (Item id name desc) = object [ "id" .= id, "name" .= name, "description" .= desc ]
+    toJSON (Item id name desc quantity) = object [ "id" .= id, "name" .= name, "description" .= desc, "quantity" .= quantity ]

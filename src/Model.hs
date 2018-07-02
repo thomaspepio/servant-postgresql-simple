@@ -9,7 +9,8 @@ type ItemId = Integer
 
 data Item = Item { itemId      :: ItemId,
                    name        :: Text,
-                   description :: Text }
+                   description :: Text,
+                   quantity    :: Integer }
     deriving (Eq, Show)
 
 data ItemAvailability = DoesNotExists | NotAvailable | Exists Item

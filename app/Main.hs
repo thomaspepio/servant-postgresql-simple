@@ -23,12 +23,12 @@ exampleServant = run 8080 application
 exampleAeson :: IO ()
 exampleAeson = do
     putStrLn "Decoding an item"
-    print $ encode Item { itemId = 0, name = "foo", description = "bar" }
+    print $ encode Item { itemId = 0, name = "foo", description = "bar", quantity = 1 }
     putStrLn ""
     putStrLn "Encoding an item"
     print decoded
         where
-            decoded = decode (pack "{\"id\":0,\"name\":\"foo\",\"description\":\"bar\"}") :: Maybe Item
+            decoded = decode (pack "{\"id\":0,\"name\":\"foo\",\"description\":\"bar\",\"quantity\":1}") :: Maybe Item
 
 -- Example #1 : Postgresql
 examplePostgres :: IO ()

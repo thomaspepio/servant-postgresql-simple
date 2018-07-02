@@ -10,12 +10,15 @@ import           Database
 import           Endpoints
 import           Model
 
+main :: IO ()
+main = examplePostgres
+
 -- Example #2 : Aeson
 exampleMessage :: String
 exampleMessage = "{\"id\":0,\"name\":\"foo\",\"description\":\"bar\"}"
 
-main :: IO ()
-main = do
+exampleAeson :: IO ()
+exampleAeson = do
     putStrLn "Decoding an item"
     print $ encode Item { itemId = 0, name = "foo", description = "bar" }
     putStrLn ""
@@ -25,7 +28,7 @@ main = do
             decoded = decode (pack exampleMessage) :: Maybe Item
 
 -- Example #1 : Postgresql
--- main :: IO ()
--- main = do
---     item <- findItem 1
---     print item
+examplePostgres :: IO ()
+examplePostgres = do
+    item <- findItem 1
+    print item

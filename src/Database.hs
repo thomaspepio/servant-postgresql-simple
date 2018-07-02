@@ -22,7 +22,7 @@ data ItemAvailability = DoesNotExists | NotAvailable | Exists Item
 
 findItem :: ItemId -> IO ItemAvailability
 findItem id = do
-    conn <- connectPostgreSQL "host=127.0.0.1 dbname=haskell_test user=haskell_test password=haskell_test"
+    conn <- connectPostgreSQL "host=127.0.0.1 dbname=haskell_clean_archi_for_free user=haskell_clean_archi_for_free password=haskell_clean_archi_for_free"
     i <- query conn "select id, name, description from item where id=?" [id]
     case i of
         [item] -> return $ Exists item

@@ -13,7 +13,7 @@ data Item = Item { itemId      :: ItemId,
                    description :: Text }
     deriving (Eq, Show)
 
-data ItemAvailability = DoesNotExists | NotAvailable | Exists Item
+data ItemAvailability = DoesNotExists | NotAvailable | Available Item
     deriving (Eq, Show)
 
 data Stock = Stock { item     :: Item,

@@ -28,6 +28,6 @@ findItemById id = do
     case stock of
         [Stock item qt] ->
             if qt > 0
-                then return $ Exists item
+                then return $ Available item
                 else return NotAvailable
         [] -> return DoesNotExists

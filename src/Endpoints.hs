@@ -30,7 +30,7 @@ server = getItem
             case item of
                 DoesNotExists -> throwError $ err404 { errBody = "This item does not exists" }
                 NotAvailable  -> throwError $ err404 { errBody = "This item is not in stock" }
-                Exists i      -> return i
+                Available i      -> return i
 
 application :: Application
 application = serve itemAPI server

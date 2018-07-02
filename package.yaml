@@ -21,7 +21,12 @@ description:         Please see the README on GitHub at <https://github.com/gith
 
 dependencies:
 - base >= 4.7 && < 5
+- aeson
+- attoparsec
+- bytestring
 - postgresql-simple
+- servant
+- servant-server
 - text
 
 library:
@@ -37,7 +42,12 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - clean-archi-for-free
+    - aeson
+    - attoparsec
+    - bytestring
     - postgresql-simple
+    - servant
+    - servant-server
     - text
 
 tests:

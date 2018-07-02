@@ -24,11 +24,13 @@ dependencies:
 - aeson
 - attoparsec
 - bytestring
-- either
 - postgresql-simple
 - servant
 - servant-server
 - text
+- transformers >= 0.4
+- wai
+- warp
 
 library:
   source-dirs: src
@@ -46,11 +48,13 @@ executables:
     - aeson
     - attoparsec
     - bytestring
-    - either
     - postgresql-simple
     - servant
     - servant-server
     - text
+    - transformers >= 0.4
+    - wai
+    - warp
 
 tests:
   clean-archi-for-free-test:

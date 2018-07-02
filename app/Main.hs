@@ -5,13 +5,19 @@ import           Data.Aeson
 import           Data.ByteString.Lazy.Char8 hiding (putStrLn)
 import           Data.Maybe
 import           Data.Text                  hiding (pack)
+import           Network.Wai
+import           Network.Wai.Handler.Warp
 
 import           Database
 import           Endpoints
 import           Model
 
 main :: IO ()
-main = examplePostgres
+main = exampleServant
+
+-- Example #3 : Servant
+exampleServant :: IO ()
+exampleServant = run 8080 application
 
 -- Example #2 : Aeson
 exampleMessage :: String

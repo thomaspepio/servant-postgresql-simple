@@ -1,5 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Model where
+module Model (
+    ItemId, Item(..), ItemAvailability(..)
+) where
 
 import           Data.Text
 

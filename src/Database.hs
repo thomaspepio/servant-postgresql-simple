@@ -12,13 +12,11 @@ import           Data.Text
 import           Database.PostgreSQL.Simple
 import           Database.PostgreSQL.Simple.FromField
 import           Database.PostgreSQL.Simple.FromRow
+
 import           Model
 
 instance FromRow Item where
     fromRow = Item <$> field <*> field <*> field
-
-data ItemAvailability = DoesNotExists | NotAvailable | Exists Item
-    deriving (Eq, Show)
 
 findItem :: ItemId -> IO ItemAvailability
 findItem id = do

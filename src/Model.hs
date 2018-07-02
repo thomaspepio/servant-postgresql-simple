@@ -9,3 +9,7 @@ data Item = Item { itemId      :: ItemId,
                    name        :: Text,
                    description :: Text }
     deriving (Eq, Show)
+
+
+data ItemAvailability = DoesNotExists | NotAvailable | Exists Item
+    deriving (Eq, Show)

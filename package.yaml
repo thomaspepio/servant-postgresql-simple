@@ -24,6 +24,7 @@ dependencies:
 - aeson
 - attoparsec
 - bytestring
+- either
 - postgresql-simple
 - servant
 - servant-server
@@ -45,6 +46,7 @@ executables:
     - aeson
     - attoparsec
     - bytestring
+    - either
     - postgresql-simple
     - servant
     - servant-server

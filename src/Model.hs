@@ -12,6 +12,5 @@ data Item = Item { itemId      :: ItemId,
                    description :: Text }
     deriving (Eq, Show)
 
-
 data ItemAvailability = DoesNotExists | NotAvailable | Exists Item
     deriving (Eq, Show)

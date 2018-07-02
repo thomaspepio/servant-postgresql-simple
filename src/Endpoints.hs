@@ -5,6 +5,7 @@ module Endpoints (
     application
 ) where
 
+import           Control.Monad.IO.Class
 import           Control.Monad.Trans.Except
 import           Data.Aeson
 import           Data.ByteString
@@ -24,7 +25,12 @@ server :: Server ItemAPI
 server = getItem
     where
         getItem :: Integer -> Handler Item
-        getItem id = return Item { itemId = 0, name = "foo", description = "bar"}
+        getItem id = do
+            item <- liftIO $ findItem id
+            case item of
+                DoesNotExists -> throwError err404
+                NotAvailable  -> throwError err404
+                Exists i      -> return i
 
 application :: Application
 application = serve itemAPI server

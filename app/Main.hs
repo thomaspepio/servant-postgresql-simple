@@ -20,9 +20,6 @@ exampleServant :: IO ()
 exampleServant = run 8080 application
 
 -- Example #2 : Aeson
-exampleMessage :: String
-exampleMessage = "{\"id\":0,\"name\":\"foo\",\"description\":\"bar\"}"
-
 exampleAeson :: IO ()
 exampleAeson = do
     putStrLn "Decoding an item"
@@ -31,7 +28,7 @@ exampleAeson = do
     putStrLn "Encoding an item"
     print decoded
         where
-            decoded = decode (pack exampleMessage) :: Maybe Item
+            decoded = decode (pack "{\"id\":0,\"name\":\"foo\",\"description\":\"bar\"}") :: Maybe Item
 
 -- Example #1 : Postgresql
 examplePostgres :: IO ()

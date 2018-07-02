@@ -1,4 +1,4 @@
-# clean-archi-for-free
+# A toy project to fiddle with Servant and postgresql-simple
 
 A toy-project to demonstrate why Haskell has what is called _"hexa / clean architecture"_ for free.
 

@@ -12,7 +12,7 @@ import           Data.ByteString
 import           Servant
 
 import           Database
-import           Model
+import           Item
 
 type ItemAPI =
     -- GET /item/:id
@@ -26,7 +26,7 @@ server = getItem
     where
         getItem :: Integer -> Handler Item
         getItem id = do
-            item <- liftIO $ findItem id
+            item <- liftIO $ findItemById id
             case item of
                 DoesNotExists -> throwError $ err404 { errBody = "This item does not exists" }
                 NotAvailable  -> throwError $ err404 { errBody = "This item is not in stock" }
@@ -40,7 +40,6 @@ instance FromJSON Item where
         <$> i .: "id"
         <*> i .: "name"
         <*> i .: "description"
-        <*> i .: "quantity"
 
 instance ToJSON Item where
-    toJSON (Item id name desc quantity) = object [ "id" .= id, "name" .= name, "description" .= desc, "quantity" .= quantity ]
+    toJSON (Item id name desc) = object [ "id" .= id, "name" .= name, "description" .= desc ]

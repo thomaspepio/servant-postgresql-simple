@@ -10,7 +10,7 @@ import           Network.Wai.Handler.Warp
 
 import           Database
 import           Endpoints
-import           Model
+import           Item
 
 main :: IO ()
 main = exampleServant
@@ -23,15 +23,15 @@ exampleServant = run 8080 application
 exampleAeson :: IO ()
 exampleAeson = do
     putStrLn "Decoding an item"
-    print $ encode Item { itemId = 0, name = "foo", description = "bar", quantity = 1 }
+    print $ encode Item { itemId = 0, name = "foo", description = "bar" }
     putStrLn ""
     putStrLn "Encoding an item"
     print decoded
         where
-            decoded = decode (pack "{\"id\":0,\"name\":\"foo\",\"description\":\"bar\",\"quantity\":1}") :: Maybe Item
+            decoded = decode (pack "{\"id\":0,\"name\":\"foo\",\"description\":\"bar\"}") :: Maybe Item
 
 -- Example #1 : Postgresql
 examplePostgres :: IO ()
 examplePostgres = do
-    item <- findItem 1
+    item <- findItemById 1
     print item

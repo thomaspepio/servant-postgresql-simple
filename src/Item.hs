@@ -21,9 +21,9 @@ data Stock = Stock { item     :: Item,
     deriving (Eq, Show)
 
 addStock :: Integer -> Stock -> Stock
-addStock toAdd (Stock i qt) = Stock { item = i, quantity = qt + toAdd }
+addStock toAdd (Stock i qt) = Stock i (qt + toAdd)
 
 removeStock :: Integer -> Stock -> Stock
 removeStock toRemove (Stock i qt)
-    | qt - toRemove < 0 = Stock { item = i, quantity = 0 }
-    | otherwise = Stock { item = i, quantity = qt - toRemove }
+    | qt - toRemove < 0 = Stock i 0
+    | otherwise = Stock i (qt - toRemove)

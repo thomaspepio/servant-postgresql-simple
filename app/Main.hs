@@ -8,9 +8,9 @@ import           Data.Text                  hiding (pack)
 import           Network.Wai
 import           Network.Wai.Handler.Warp
 
-import           Database
 import           Endpoints
 import           Item
+import           Persistence
 
 main :: IO ()
 main = exampleServant

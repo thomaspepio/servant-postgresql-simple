@@ -26,4 +26,4 @@ addStock toAdd (Stock i qt) = Stock i (qt + toAdd)
 removeStock :: Integer -> Stock -> Stock
 removeStock toRemove (Stock i qt)
     | qt - toRemove < 0 = Stock i 0
-    | otherwise = Stock i (qt - toRemove)
+    | otherwise         = Stock i (qt - toRemove)

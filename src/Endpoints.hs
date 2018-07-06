@@ -9,10 +9,11 @@ import           Control.Monad.IO.Class
 import           Control.Monad.Trans.Except
 import           Data.Aeson
 import           Data.ByteString
+import           Database.PostgreSQL.Simple
 import           Servant
 
-import           Database
 import           Item
+import           Persistence
 
 type ItemAPI =
     -- GET /item/:id

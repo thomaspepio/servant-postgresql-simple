@@ -1,14 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
-module DatabaseSpec where
+module PersistenceSpec where
 
 import           Data.Text
 import           Test.Hspec
 
-import           Database
 import           Item
+import           Persistence
 
 spec :: Spec
-spec = describe "Database interface" $ do
+spec = describe "Persistence interface" $ do
 
     it "should be able to connect" $ do
         findItemById 1 `shouldReturn` Available (Item 1 "Nintendo Switch" "Best console of its generation")

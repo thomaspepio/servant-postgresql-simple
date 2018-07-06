@@ -1,18 +1,23 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Database (
+module Persistence (
     Item(..), ItemId, ItemAvailability,
     findItemById
 ) where
 
 import           Control.Applicative
 import           Control.Monad
+import           Control.Monad.IO.Class
+import           Data.ByteString                      hiding (putStrLn)
 import           Data.Maybe
 import           Data.Monoid
-import           Data.Text
+import           Data.Text                            hiding (pack)
+import           Data.Word
 import           Database.PostgreSQL.Simple
 import           Database.PostgreSQL.Simple.FromField
 import           Database.PostgreSQL.Simple.FromRow
+import           System.Environment
 
+import           Environment
 import           Item
 
 instance FromRow Item where
@@ -21,9 +26,20 @@ instance FromRow Item where
 instance FromRow Stock where
     fromRow = Stock <$> liftM3 Item field field field <*> field
 
+connection :: IO Connection
+connection = do
+    (Config dbhost dbuser dbpassword dbname) <- readConfiguration
+    connect defaultConnectInfo {
+        connectHost = dbhost,
+        connectPort = 5432,
+        connectUser = dbuser,
+        connectPassword = dbpassword,
+        connectDatabase = dbname
+    }
+
 findItemById :: ItemId -> IO ItemAvailability
 findItemById id = do
-    conn <- connectPostgreSQL "host=127.0.0.1 dbname=haskell_clean_archi_for_free user=haskell_clean_archi_for_free password=haskell_clean_archi_for_free"
+    conn <- liftIO connection
     stock <- query conn "select id, name, description, quantity from item where id=?" [id]
     case stock of
         [Stock item qt] ->

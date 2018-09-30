@@ -6,12 +6,11 @@ module Environment (
 import           Control.Monad.Trans.Reader
 import           System.Environment
 
-data Config = Config {
-    dbhost     :: String,
-    dbuser     :: String,
-    dbpassword :: String,
-    dbname     :: String
-} deriving (Eq, Show)
+data Config = Config { dbhost     :: String,
+                       dbuser     :: String,
+                       dbpassword :: String,
+                       dbname     :: String
+              } deriving (Eq, Show)
 
 readConfiguration :: IO Config
 readConfiguration = do

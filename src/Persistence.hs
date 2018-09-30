@@ -1,13 +1,15 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Persistence (
     Item(..), ItemId, ItemAvailability,
-    findItemById
+    findItemById, findItemByNameAndDescription, addNewItem
 ) where
 
 import           Control.Applicative
 import           Control.Monad
 import           Control.Monad.IO.Class
 import           Data.ByteString                      hiding (putStrLn)
+import           Data.Either
+import           Data.Int
 import           Data.Maybe
 import           Data.Monoid
 import           Data.Text                            hiding (pack)
@@ -47,3 +49,21 @@ findItemById id = do
                 then return $ Available item
                 else return NotAvailable
         [] -> return DoesNotExists
+
+findItemByNameAndDescription :: Item -> IO ItemAvailability
+findItemByNameAndDescription (Item _ name desc) = do
+    conn <- liftIO connection
+    item <- query conn "select id, name, description from item where name=? and description=?" [name, desc]
+    case item of
+        [i] -> return $ Available i
+        []  -> return $ DoesNotExists
+
+addNewItem :: Item -> IO (Either Text Int64)
+addNewItem (Item id name desc) = do
+    conn <- liftIO connection
+    itemExists <- findItemByNameAndDescription (Item id name desc)
+    case itemExists of
+        DoesNotExists -> do
+            nbRows <- execute conn "insert into item(name, description, quantity) values(?, ?, 0)" [name, desc]
+            return $ Right nbRows
+        _ -> return $ Left "Item already exists"

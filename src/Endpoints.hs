@@ -16,14 +16,15 @@ import           Item
 import           Persistence
 
 type ItemAPI =
-    -- GET /item/:id
-    "item" :> Capture "id" Integer :> Get '[JSON] Item
+         "item" :> Capture "id" Integer :> Get '[JSON] Item     -- GET /item/:id
+    :<|> "item" :> ReqBody '[JSON] Item :> Post '[JSON] ItemId  -- POST /item
 
 itemAPI :: Proxy ItemAPI
 itemAPI = Proxy
 
 server :: Server ItemAPI
-server = getItem
+server = getItem 
+    :<|> postItem
     where
         getItem :: Integer -> Handler Item
         getItem id = do
@@ -32,6 +33,12 @@ server = getItem
                 DoesNotExists -> throwError $ err404 { errBody = "This item does not exists" }
                 NotAvailable  -> throwError $ err404 { errBody = "This item is not in stock" }
                 Available i      -> return i
+        postItem :: Item -> Handler ItemId
+        postItem itemToPost = do
+            newItem <- liftIO $ addNewItem itemToPost
+            case newItem of
+                Right _  -> return 1 -- TODO : return the ID of the new item instead (is ItemAvailability a good design choice ?)
+                Left err -> throwError $ err400 { errBody = "This item already exists" }
 
 application :: Application
 application = serve itemAPI server

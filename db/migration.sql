@@ -5,6 +5,6 @@ CREATE TABLE ITEM (
   QUANTITY int not null
 );
 
-INSERT INTO ITEM(NAME, DESCRIPTION, QUANTITY) values ('Nintendo Switch', 'Best console of its generation', 10);
-INSERT INTO ITEM(NAME, DESCRIPTION, QUANTITY) values ('Playstation 4', 'Almost as good as the Switch', 20);
-INSERT INTO ITEM(NAME, DESCRIPTION, QUANTITY) values ('Gamebuino', 'A retro console to learn coding (made per request)', 0);
+INSERT INTO ITEM(NAME, DESCRIPTION, QUANTITY) values ('La Distinction', 'De Pierre Bourdieu', 10);
+INSERT INTO ITEM(NAME, DESCRIPTION, QUANTITY) values ('La misère du monde', 'Ouvrage collectif rédigé sous la direction de Pierre Bourdieu', 20);
+INSERT INTO ITEM(NAME, DESCRIPTION, QUANTITY) values ('Capitalisme et désir de servitude', 'De Frédéric Lordon', 0);

@@ -1,6 +1,6 @@
-name:                clean-archi-for-free
+name:                servant-postgresql-simple
 version:             0.1.0.0
-github:              "githubuser/clean-archi-for-free"
+github:              "githubuser/servant-postgresql-simple"
 license:             BSD3
 author:              "Author name here"
 maintainer:          "example@example.com"
@@ -17,7 +17,7 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/githubuser/clean-archi-for-free#readme>
+description:         Please see the README on GitHub at <https://github.com/githubuser/servant-postgresql-simple#readme>
 
 dependencies:
 - base >= 4.7 && < 5
@@ -36,7 +36,7 @@ library:
   source-dirs: src
 
 executables:
-  clean-archi-for-free-exe:
+  servant-postgresql-simple-exe:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
@@ -44,7 +44,7 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - clean-archi-for-free
+    - servant-postgresql-simple
     - aeson
     - attoparsec
     - bytestring
@@ -57,7 +57,7 @@ executables:
     - warp
 
 tests:
-  clean-archi-for-free-test:
+  servant-postgresql-simple-test:
     main:                Spec.hs
     source-dirs:         test
     ghc-options:
@@ -65,7 +65,7 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - clean-archi-for-free
+    - servant-postgresql-simple
     - hspec
     - hspec-discover
     - QuickCheck

@@ -20,7 +20,7 @@ readConfiguration = do
     name     <- lookupEnv "DB_NAME"
     case (host, user, password, name) of
         (Just dbhost, Just dbuser, Just dbpassword, Just dbname) -> return $ Config dbhost dbuser dbpassword dbname
-        (Nothing, Nothing, Nothing, Nothing)                     -> return $ Config "127.0.0.1" "haskell_clean_archi_for_free" "haskell_clean_archi_for_free" "haskell_clean_archi_for_free"
+        (Nothing, Nothing, Nothing, Nothing)                     -> return $ Config "127.0.0.1" "haskell_servant_postgresql_simple" "haskell_servant_postgresql_simple" "haskell_servant_postgresql_simple"
         (Nothing, _, _, _)                                       -> error "DB_HOST environment variable is not set"
         (_, Nothing, _, _)                                       -> error "DB_USER environment variable is not set"
         (_, _, Nothing, _)                                       -> error "DB_PASSWORD environment variable is not set"

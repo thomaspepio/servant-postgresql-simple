@@ -23,22 +23,22 @@ itemAPI :: Proxy ItemAPI
 itemAPI = Proxy
 
 server :: Server ItemAPI
-server = getItem 
-    :<|> postItem
-    where
-        getItem :: Integer -> Handler Item
-        getItem id = do
-            item <- liftIO $ findItemById id
-            case item of
-                DoesNotExists -> throwError $ err404 { errBody = "This item does not exists" }
-                NotAvailable  -> throwError $ err404 { errBody = "This item is not in stock" }
-                Available i      -> return i
-        postItem :: Item -> Handler ItemId
-        postItem itemToPost = do
-            newItem <- liftIO $ addNewItem itemToPost
-            case newItem of
-                Right _  -> return 1 -- TODO : return the ID of the new item instead (is ItemAvailability a good design choice ?)
-                Left err -> throwError $ err400 { errBody = "This item already exists" }
+server = getItem :<|> postItem
+
+getItem :: Integer -> Handler Item
+getItem id = do
+    item <- liftIO $ findItemById id
+    case item of
+        DoesNotExists -> throwError $ err404 { errBody = "This item does not exists" }
+        NotAvailable  -> throwError $ err404 { errBody = "This item is not in stock" }
+        Available i      -> return i
+
+postItem :: Item -> Handler ItemId
+postItem itemToPost = do
+    newItem <- liftIO $ addNewItem itemToPost
+    case newItem of
+        Right _  -> return 1 -- TODO : return the ID of the new item instead (is ItemAvailability a good design choice ?)
+        Left err -> throwError $ err400 { errBody = "This item already exists" }
 
 application :: Application
 application = serve itemAPI server

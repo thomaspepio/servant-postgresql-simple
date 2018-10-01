@@ -1,6 +1,5 @@
-{-# LANGUAGE OverloadedStrings #-}
 module Item (
-    ItemId, Item(..), ItemAvailability(..), Stock(..),
+    ItemId, Item(..), Availability(..), Stock(..),
     addStock, removeStock
 ) where
 
@@ -13,7 +12,7 @@ data Item = Item { itemId      :: ItemId,
                    description :: Text }
     deriving (Eq, Show)
 
-data ItemAvailability = DoesNotExists | NotAvailable | Available Item
+data Availability a = Available a | NotAvailable | Unknown
     deriving (Eq, Show)
 
 data Stock = Stock { item     :: Item,

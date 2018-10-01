@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Persistence (
-    Item(..), ItemId, ItemAvailability,
+    Item(..), ItemId,
     findItemById, findItemByNameAndDescription, addNewItem
 ) where
 
@@ -26,7 +26,7 @@ instance FromRow Item where
     fromRow = Item <$> field <*> field <*> field
 
 instance FromRow Stock where
-    fromRow = Stock <$> liftM3 Item field field field <*> field
+    fromRow = Stock <$> fromRow <*> field
 
 connection :: IO Connection
 connection = do
@@ -39,31 +39,34 @@ connection = do
         connectDatabase = dbname
     }
 
-findItemById :: ItemId -> IO ItemAvailability
-findItemById id = do
-    conn <- liftIO connection
-    stock <- query conn "select id, name, description, quantity from item where id=?" [id]
-    case stock of
-        [Stock item qt] ->
-            if qt > 0
-                then return $ Available item
-                else return NotAvailable
-        [] -> return DoesNotExists
+findItemById :: ItemId -> IO (Availability Item)
+findItemById id = 
+    findItemGivenParams (Item id "" "") ("select id, name, description, quantity from item where id=?", [id])
 
-findItemByNameAndDescription :: Item -> IO ItemAvailability
-findItemByNameAndDescription (Item _ name desc) = do
-    conn <- liftIO connection
-    item <- query conn "select id, name, description from item where name=? and description=?" [name, desc]
-    case item of
-        [i] -> return $ Available i
-        []  -> return $ DoesNotExists
+findItemByNameAndDescription :: Item -> IO (Availability Item)
+findItemByNameAndDescription (Item id name desc) = 
+    findItemGivenParams (Item id name desc) ("select id, name, description, quantity from item where name=? and description=?", [name, desc])
+
+findItemGivenParams :: ToRow q => Item -> (Query, q) -> IO (Availability Item)
+findItemGivenParams item (sqlQuery, params) = do
+    conn <- connection
+    item <- query conn sqlQuery params
+    maybe invalidPrimaryKeyConstraint return $ checkAvailability item
 
 addNewItem :: Item -> IO (Either Text Int64)
 addNewItem (Item id name desc) = do
     conn <- liftIO connection
     itemExists <- findItemByNameAndDescription (Item id name desc)
     case itemExists of
-        DoesNotExists -> do
+        Unknown -> do
             nbRows <- execute conn "insert into item(name, description, quantity) values(?, ?, 0)" [name, desc]
             return $ Right nbRows
         _ -> return $ Left "Item already exists"
+
+checkAvailability :: [Stock] -> Maybe (Availability Item)
+checkAvailability [Stock _ 0]  = Just NotAvailable
+checkAvailability [Stock i qt] = Just $ Available i
+checkAvailability []           = Just Unknown
+checkAvailability _            = Nothing
+
+invalidPrimaryKeyConstraint = error "invalid primary key constraint on Item"

@@ -29,9 +29,9 @@ getItem :: Integer -> Handler Item
 getItem id = do
     item <- liftIO $ findItemById id
     case item of
-        DoesNotExists -> throwError $ err404 { errBody = "This item does not exists" }
-        NotAvailable  -> throwError $ err404 { errBody = "This item is not in stock" }
-        Available i      -> return i
+        Unknown      -> throwError $ err404 { errBody = "This item does not exists" }
+        NotAvailable -> throwError $ err404 { errBody = "This item is not in stock" }
+        Available i  -> return i
 
 postItem :: Item -> Handler ItemId
 postItem itemToPost = do

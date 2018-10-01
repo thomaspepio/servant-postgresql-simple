@@ -19,13 +19,13 @@ spec = describe "Persistence interface" $ do
         it "should be able to fetch item by name and description" $ do
             findItemByNameAndDescription distinction `shouldReturn` Available distinction
             findItemByNameAndDescription misereDuMonde `shouldReturn` Available misereDuMonde
-            findItemByNameAndDescription desirServitude `shouldReturn` Available desirServitude
+            findItemByNameAndDescription desirServitude `shouldReturn` NotAvailable
 
         it "should be able to fetch item availabilities" $ do
             findItemById 1 `shouldReturn` Available distinction
             findItemById 2 `shouldReturn` Available misereDuMonde
             findItemById 3 `shouldReturn` NotAvailable
-            findItemById 4 `shouldReturn` DoesNotExists
+            findItemById 4 `shouldReturn` Unknown
 
     describe "inserting and deleting items" $ do
         it "should be able to insert items" $

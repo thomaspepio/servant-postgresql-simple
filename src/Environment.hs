@@ -29,9 +29,7 @@ defaultConfig = Config "127.0.0.1" "haskell_servant_postgresql_simple" "haskell_
 readConfiguration :: IO Config
 readConfiguration = do
     lookedUp <- runExceptT lookupConfiguration
-    case lookedUp of
-        Right config -> return config
-        Left error   -> return defaultConfig
+    return $ either (const defaultConfig) id lookedUp
 
 lookupConfiguration :: ConfigurationLookup Config
 lookupConfiguration = do

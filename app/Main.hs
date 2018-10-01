@@ -13,25 +13,26 @@ import           Item
 import           Persistence
 
 main :: IO ()
-main = exampleServant
+-- main = exampleServant
+main = undefined
 
 -- Example #3 : Servant
-exampleServant :: IO ()
-exampleServant = run 8080 application
+-- exampleServant :: IO ()
+-- exampleServant = run 8080 application
 
 -- Example #2 : Aeson
-exampleAeson :: IO ()
-exampleAeson = do
-    putStrLn "Decoding an item"
-    print $ encode Item { itemId = 0, name = "foo", description = "bar" }
-    putStrLn ""
-    putStrLn "Encoding an item"
-    print decoded
-        where
-            decoded = decode (pack "{\"id\":0,\"name\":\"foo\",\"description\":\"bar\"}") :: Maybe Item
+-- exampleAeson :: IO ()
+-- exampleAeson = do
+--     putStrLn "Decoding an item"
+--     print $ encode Item { itemId = 0, name = "foo", description = "bar" }
+--     putStrLn ""
+--     putStrLn "Encoding an item"
+--     print decoded
+--         where
+--             decoded = decode (pack "{\"id\":0,\"name\":\"foo\",\"description\":\"bar\"}") :: Maybe Item
 
 -- Example #1 : Postgresql
-examplePostgres :: IO ()
-examplePostgres = do
-    item <- findItemById 1
-    print item
+-- examplePostgres :: IO ()
+-- examplePostgres = do
+--     item <- findItemById 1
+--     print item

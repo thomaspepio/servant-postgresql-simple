@@ -12,6 +12,7 @@ data Config = Config { dbhost     :: String,
                        dbname     :: String
               } deriving (Eq, Show)
 
+-- readConfiguration :: EitherIO ConfigError Config
 readConfiguration :: IO Config
 readConfiguration = do
     host     <- lookupEnv "DB_HOST"

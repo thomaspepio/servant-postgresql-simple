@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 module Persistence (
     Item(..), ItemId, ItemAvailability,
     findItemById, findItemByNameAndDescription, addNewItem
@@ -22,11 +23,34 @@ import           System.Environment
 import           Environment
 import           Item
 
-connection :: IO Connection -- How to get a connection from postgres-simple ?
-connection = undefined
+instance FromRow Item where
+    fromRow = Item <$> field <*> field <*> field
+
+instance FromRow Stock where
+    fromRow = Stock <$> fromRow <*> field
+
+connection :: IO Connection
+connection = do
+    (Config dbhost dbuser dbpassword  dbname) <- readConfiguration
+    connect defaultConnectInfo {
+        connectHost = dbhost,
+        connectPort = 5432,
+        connectUser = dbuser,
+        connectPassword = dbpassword,
+        connectDatabase = dbname
+    }
 
 findItemById :: ItemId -> IO ItemAvailability
-findItemById = undefined
+findItemById id = do
+    conn <- connection
+    result <- query conn "select id, name, description, quantity from item where id=?" [id]
+    maybe (error "invalid constraint") return $ checkAvailability result
+
+checkAvailability :: [Stock] -> Maybe ItemAvailability
+checkAvailability [Stock _ 0]  = Just NotAvailable
+checkAvailability [Stock i qt] = Just $ Available i
+checkAvailability []           = Just DoesNotExists
+checkAvailability _            = Nothing
 
 findItemByNameAndDescription :: Item -> IO ItemAvailability
 findItemByNameAndDescription = undefined

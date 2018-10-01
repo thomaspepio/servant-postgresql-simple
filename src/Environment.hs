@@ -1,27 +1,49 @@
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 module Environment (
     Config(..),
     readConfiguration
 ) where
 
-import           Control.Monad.Trans.Reader
+import           Prelude hiding(concat)
+
+import           Data.Monoid
+import           Control.Monad.IO.Class
+import           Control.Monad.Trans.Class
+import           Control.Monad.Trans.Except
+import           Data.Text
 import           System.Environment
 
-data Config = Config { dbhost     :: String,
-                       dbuser     :: String,
-                       dbpassword :: String,
-                       dbname     :: String
+data Config = Config { dbhost     :: Text,
+                       dbuser     :: Text,
+                       dbpassword :: Text,
+                       dbname     :: Text
               } deriving (Eq, Show)
+
+type ConfigurationError = Text
+type ConfigurationLookup a = ExceptT ConfigurationError IO a
+
+defaultConfig :: Config
+defaultConfig = Config "127.0.0.1" "haskell_servant_postgresql_simple" "haskell_servant_postgresql_simple" "haskell_servant_postgresql_simple"
 
 readConfiguration :: IO Config
 readConfiguration = do
-    host     <- lookupEnv "DB_HOST"
-    user     <- lookupEnv "DB_USER"
-    password <- lookupEnv "DB_PASSWORD"
-    name     <- lookupEnv "DB_NAME"
-    case (host, user, password, name) of
-        (Just dbhost, Just dbuser, Just dbpassword, Just dbname) -> return $ Config dbhost dbuser dbpassword dbname
-        (Nothing, Nothing, Nothing, Nothing)                     -> return $ Config "127.0.0.1" "haskell_servant_postgresql_simple" "haskell_servant_postgresql_simple" "haskell_servant_postgresql_simple"
-        (Nothing, _, _, _)                                       -> error "DB_HOST environment variable is not set"
-        (_, Nothing, _, _)                                       -> error "DB_USER environment variable is not set"
-        (_, _, Nothing, _)                                       -> error "DB_PASSWORD environment variable is not set"
-        (_, _, _, Nothing)                                       -> error "DB_NAME environment variable is not set"
+    lookedUp <- runExceptT lookupConfiguration
+    case lookedUp of
+        Right config -> return config
+        Left error   -> return defaultConfig
+
+lookupConfiguration :: ConfigurationLookup Config
+lookupConfiguration = do
+    host     <- lookupEnvVar "DB_HOST"
+    user     <- lookupEnvVar "DB_USER"
+    password <- lookupEnvVar "DB_PASSWORD"
+    name     <- lookupEnvVar "DB_NAME"
+    return $ Config host user password name
+
+lookupEnvVar :: Text -> ConfigurationLookup Text
+lookupEnvVar var = do
+    host <- liftIO $ lookupEnv (unpack var)
+    case host of
+        Just h  -> return $ pack h
+        Nothing -> throwE $ "Environment variable " <> var <> " is missing"

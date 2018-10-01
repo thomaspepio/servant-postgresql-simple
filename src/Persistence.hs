@@ -7,7 +7,7 @@ module Persistence (
 import           Control.Applicative
 import           Control.Monad
 import           Control.Monad.IO.Class
-import           Data.ByteString                      hiding (putStrLn)
+import           Data.ByteString                      hiding (putStrLn, unpack)
 import           Data.Either
 import           Data.Int
 import           Data.Maybe
@@ -32,11 +32,11 @@ connection :: IO Connection
 connection = do
     (Config dbhost dbuser dbpassword dbname) <- readConfiguration
     connect defaultConnectInfo {
-        connectHost = dbhost,
+        connectHost = unpack dbhost,
         connectPort = 5432,
-        connectUser = dbuser,
-        connectPassword = dbpassword,
-        connectDatabase = dbname
+        connectUser = unpack dbuser,
+        connectPassword = unpack dbpassword,
+        connectDatabase = unpack dbname
     }
 
 findItemById :: ItemId -> IO (Availability Item)
